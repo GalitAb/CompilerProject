@@ -8,14 +8,14 @@
 
 %%
 	/*Variable Types*/
-"bool" 						return BOOL;
-"int" 						return INT;
-"int*" 						return INTP;
-"real" 						return REAL;
-"real*" 					return REALP;
-"char" 						return CHAR;
-"char*" 					return CHARP;
-"string" 					return STRING;
+"bool" 						{yylval.string = strdup(yytext);return BOOL;}
+"int" 						{yylval.string = strdup(yytext);return INT;}
+"int*" 						{yylval.string = strdup(yytext);return INTP;}
+"real" 						{yylval.string = strdup(yytext);return REAL;}
+"real*" 					{yylval.string = strdup(yytext);return REALP;}
+"char" 						{yylval.string = strdup(yytext);return CHAR;}
+"char*" 					{yylval.string = strdup(yytext);return CHARP;}
+"string" 					{yylval.string = strdup(yytext);return STRING;}
 "var" 						return VAR;
 "proc" 						return PROC;
 "func" 						return FUNC;
@@ -63,14 +63,13 @@
 
 "_" 						return UNDERSCORE;
 \|[a-zA-Z0-9]+\| 			return STR_LEN;
-"Main()" 					return MAIN;
-
+"Main" 					return MAIN;
+"true" 						return TRUE;
+"false" 					return FALSE;
 	/*Variable name*/
 [a-zA-Z]([a-zA-Z]|[0-9]|"_")* 			{yylval.string = strdup(yytext); return ID;}
 
 	/*CONSTS*/
-"true" 						return TRUE;
-"false" 					return FALSE;
 0|([-+]?[1-9][0-9]*([eE][+-][1-9][0-9]*)?) 	{yylval.string = strdup(yytext); return INTEGER;}
 [-+]?[0-9]*\.[0-9]*([eE][+-][1-9][0-9]*)? 	{yylval.string = strdup(yytext); return REAL_NUM;}
 [0][xX][A-F0-9]+ 				{yylval.string = strdup(yytext); return HEX;}
@@ -83,7 +82,7 @@
 "%/" 						return END_COMMENT;
 [ \t\r\f]+ ;
 \n ++yylineno;
-. yyerror("Error, unexpected character enter!");
+. return yytext[0];
 %%
 
 int yywrap(void) {	

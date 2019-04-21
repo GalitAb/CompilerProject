@@ -1,0 +1,2860 @@
+Terminals unused in grammar
+
+   VAL
+   COMMENT
+   UNDERSCORE
+   STR_LEN
+   STR
+   QUOTE
+   DOUBLE_QUOTES
+   BEGIN_COMMENT
+   END_COMMENT
+
+
+Grammar
+
+    0 $accept: s $end
+
+    1 s: codes main
+
+    2 codes: codes code
+    3      | %empty
+
+    4 code: FUNC ID L_BRACKET args R_BRACKET RET type func_body
+    5     | PROC ID L_BRACKET args R_BRACKET proc_body
+
+    6 type: INT
+    7     | REAL
+    8     | CHAR
+    9     | STRING
+   10     | BOOL
+   11     | CHARP
+   12     | REALP
+   13     | INTP
+
+   14 main: PROC MAIN L_BRACKET R_BRACKET proc_body
+   15     | %empty
+
+   16 proc_body: L_BLOCK code_stmt R_BLOCK
+
+   17 func_body: L_BLOCK code_stmt R_BLOCK
+
+   18 const: declare
+   19      | STRING
+   20      | INTEGER
+   21      | HEX
+   22      | REAL_NUM
+   23      | CHAR_TOKEN
+   24      | FALSE
+   25      | TRUE
+   26      | NONE
+
+   27 loop: WHILE L_BRACKET exp R_BRACKET cond_body
+   28     | FOR L_BRACKET inits SEMICOLON exp SEMICOLON prom R_BRACKET cond_body
+
+   29 condition: IF L_BRACKET exp R_BRACKET cond_body
+   30          | IF L_BRACKET exp R_BRACKET cond_body ELSE cond_body
+
+   31 cond_body: L_BLOCK code_stmt R_BLOCK
+   32          | statmnt
+
+   33 code_stmt: code_stmt statmnt
+   34          | proc_body
+   35          | %empty
+
+   36 inits: inits COMMA ID ASSIGN exp
+   37      | ID ASSIGN exp
+
+   38 statmnt: var_decleration SEMICOLON
+   39        | code
+   40        | exp SEMICOLON
+   41        | condition
+   42        | loop
+   43        | RET exp SEMICOLON
+
+   44 funct: ID L_BRACKET vars R_BRACKET
+
+   45 var_decleration: declare ASSIGN exp
+   46                | VAR vars COLON type L_SQR INTEGER R_SQR
+   47                | VAR vars COLON type
+   48                | POINTER_SIGN declare ASSIGN exp
+
+   49 vars: declare
+   50     | vars COMMA declare
+
+   51 declare: ID
+   52        | ID L_SQR exp R_SQR
+
+   53 args: %empty
+   54     | vars COLON type
+   55     | args SEMICOLON args
+
+   56 prom: declare ASSIGN exp
+   57     | prom COMMA declare ASSIGN exp
+
+   58 exp: const
+   59    | PIPE ID PIPE
+   60    | ADDRESS_OF declare
+   61    | funct
+   62    | L_BRACKET exp R_BRACKET
+   63    | PLUS exp
+   64    | MINUS exp
+   65    | LOGICAL_NOT exp
+   66    | exp PLUS exp
+   67    | exp MINUS exp
+   68    | exp MUL exp
+   69    | exp DIVISION_OP exp
+   70    | exp AND exp
+   71    | exp OR exp
+   72    | exp NOT_EQUAL exp
+   73    | exp EQUAL exp
+   74    | exp BIGGER_OR_EQUAL exp
+   75    | exp SMALLER_OR_EQUAL exp
+   76    | exp SMALLER_THAN exp
+   77    | exp BIGGER_THAN exp
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+BOOL (258) 10
+INT (259) 6
+INTP (260) 13
+REAL (261) 7
+REALP (262) 12
+CHAR (263) 8
+CHARP (264) 11
+STRING (265) 9 19
+VAL (266)
+PROC (267) 5 14
+FUNC (268) 4
+RET (269) 4 43
+NONE (270) 26
+IF (271) 29 30
+ELSE (272) 30
+FOR (273) 28
+WHILE (274) 27
+AND (275) 70
+DIVISION_OP (276) 69
+ASSIGN (277) 36 37 45 48 56 57
+EQUAL (278) 73
+BIGGER_THAN (279) 77
+BIGGER_OR_EQUAL (280) 74
+SMALLER_THAN (281) 76
+SMALLER_OR_EQUAL (282) 75
+MINUS (283) 64 67
+LOGICAL_NOT (284) 65
+NOT_EQUAL (285) 72
+OR (286) 71
+PIPE (287) 59
+PLUS (288) 63 66
+MUL (289) 68
+ADDRESS_OF (290) 60
+POINTER_SIGN (291) 48
+L_BRACKET (292) 4 5 14 27 28 29 30 44 62
+R_BRACKET (293) 4 5 14 27 28 29 30 44 62
+L_SQR (294) 46 52
+R_SQR (295) 46 52
+L_BLOCK (296) 16 17 31
+R_BLOCK (297) 16 17 31
+COMMA (298) 36 50 57
+COLON (299) 46 47 54
+SEMICOLON (300) 28 38 40 43 55
+COMMENT (301)
+UNDERSCORE (302)
+STR_LEN (303)
+MAIN (304) 14
+ID (305) 4 5 36 37 44 51 52 59
+TRUE (306) 25
+FALSE (307) 24
+INTEGER (308) 20 46
+REAL_NUM (309) 22
+HEX (310) 21
+CHAR_TOKEN (311) 23
+STR (312)
+VAR (313) 46 47
+QUOTE (314)
+DOUBLE_QUOTES (315)
+BEGIN_COMMENT (316)
+END_COMMENT (317)
+
+
+Nonterminals, with rules where they appear
+
+$accept (63)
+    on left: 0
+s (64)
+    on left: 1, on right: 0
+codes (65)
+    on left: 2 3, on right: 1 2
+code (66)
+    on left: 4 5, on right: 2 39
+type (67)
+    on left: 6 7 8 9 10 11 12 13, on right: 4 46 47 54
+main (68)
+    on left: 14 15, on right: 1
+proc_body (69)
+    on left: 16, on right: 5 14 34
+func_body (70)
+    on left: 17, on right: 4
+const (71)
+    on left: 18 19 20 21 22 23 24 25 26, on right: 58
+loop (72)
+    on left: 27 28, on right: 42
+condition (73)
+    on left: 29 30, on right: 41
+cond_body (74)
+    on left: 31 32, on right: 27 28 29 30
+code_stmt (75)
+    on left: 33 34 35, on right: 16 17 31 33
+inits (76)
+    on left: 36 37, on right: 28 36
+statmnt (77)
+    on left: 38 39 40 41 42 43, on right: 32 33
+funct (78)
+    on left: 44, on right: 61
+var_decleration (79)
+    on left: 45 46 47 48, on right: 38
+vars (80)
+    on left: 49 50, on right: 44 46 47 50 54
+declare (81)
+    on left: 51 52, on right: 18 45 48 49 50 56 57 60
+args (82)
+    on left: 53 54 55, on right: 4 5 55
+prom (83)
+    on left: 56 57, on right: 28 57
+exp (84)
+    on left: 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75
+    76 77, on right: 27 28 29 30 36 37 40 43 45 48 52 56 57 62 63 64
+    65 66 67 68 69 70 71 72 73 74 75 76 77
+
+
+State 0
+
+    0 $accept: . s $end
+
+    $default  reduce using rule 3 (codes)
+
+    s      go to state 1
+    codes  go to state 2
+
+
+State 1
+
+    0 $accept: s . $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    1 s: codes . main
+    2 codes: codes . code
+
+    PROC  shift, and go to state 4
+    FUNC  shift, and go to state 5
+
+    $default  reduce using rule 15 (main)
+
+    code  go to state 6
+    main  go to state 7
+
+
+State 3
+
+    0 $accept: s $end .
+
+    $default  accept
+
+
+State 4
+
+    5 code: PROC . ID L_BRACKET args R_BRACKET proc_body
+   14 main: PROC . MAIN L_BRACKET R_BRACKET proc_body
+
+    MAIN  shift, and go to state 8
+    ID    shift, and go to state 9
+
+
+State 5
+
+    4 code: FUNC . ID L_BRACKET args R_BRACKET RET type func_body
+
+    ID  shift, and go to state 10
+
+
+State 6
+
+    2 codes: codes code .
+
+    $default  reduce using rule 2 (codes)
+
+
+State 7
+
+    1 s: codes main .
+
+    $default  reduce using rule 1 (s)
+
+
+State 8
+
+   14 main: PROC MAIN . L_BRACKET R_BRACKET proc_body
+
+    L_BRACKET  shift, and go to state 11
+
+
+State 9
+
+    5 code: PROC ID . L_BRACKET args R_BRACKET proc_body
+
+    L_BRACKET  shift, and go to state 12
+
+
+State 10
+
+    4 code: FUNC ID . L_BRACKET args R_BRACKET RET type func_body
+
+    L_BRACKET  shift, and go to state 13
+
+
+State 11
+
+   14 main: PROC MAIN L_BRACKET . R_BRACKET proc_body
+
+    R_BRACKET  shift, and go to state 14
+
+
+State 12
+
+    5 code: PROC ID L_BRACKET . args R_BRACKET proc_body
+
+    ID  shift, and go to state 15
+
+    $default  reduce using rule 53 (args)
+
+    vars     go to state 16
+    declare  go to state 17
+    args     go to state 18
+
+
+State 13
+
+    4 code: FUNC ID L_BRACKET . args R_BRACKET RET type func_body
+
+    ID  shift, and go to state 15
+
+    $default  reduce using rule 53 (args)
+
+    vars     go to state 16
+    declare  go to state 17
+    args     go to state 19
+
+
+State 14
+
+   14 main: PROC MAIN L_BRACKET R_BRACKET . proc_body
+
+    L_BLOCK  shift, and go to state 20
+
+    proc_body  go to state 21
+
+
+State 15
+
+   51 declare: ID .
+   52        | ID . L_SQR exp R_SQR
+
+    L_SQR  shift, and go to state 22
+
+    $default  reduce using rule 51 (declare)
+
+
+State 16
+
+   50 vars: vars . COMMA declare
+   54 args: vars . COLON type
+
+    COMMA  shift, and go to state 23
+    COLON  shift, and go to state 24
+
+
+State 17
+
+   49 vars: declare .
+
+    $default  reduce using rule 49 (vars)
+
+
+State 18
+
+    5 code: PROC ID L_BRACKET args . R_BRACKET proc_body
+   55 args: args . SEMICOLON args
+
+    R_BRACKET  shift, and go to state 25
+    SEMICOLON  shift, and go to state 26
+
+
+State 19
+
+    4 code: FUNC ID L_BRACKET args . R_BRACKET RET type func_body
+   55 args: args . SEMICOLON args
+
+    R_BRACKET  shift, and go to state 27
+    SEMICOLON  shift, and go to state 26
+
+
+State 20
+
+   16 proc_body: L_BLOCK . code_stmt R_BLOCK
+
+    L_BLOCK  shift, and go to state 20
+
+    $default  reduce using rule 35 (code_stmt)
+
+    proc_body  go to state 28
+    code_stmt  go to state 29
+
+
+State 21
+
+   14 main: PROC MAIN L_BRACKET R_BRACKET proc_body .
+
+    $default  reduce using rule 14 (main)
+
+
+State 22
+
+   52 declare: ID L_SQR . exp R_SQR
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 48
+
+
+State 23
+
+   50 vars: vars COMMA . declare
+
+    ID  shift, and go to state 15
+
+    declare  go to state 49
+
+
+State 24
+
+   54 args: vars COLON . type
+
+    BOOL    shift, and go to state 50
+    INT     shift, and go to state 51
+    INTP    shift, and go to state 52
+    REAL    shift, and go to state 53
+    REALP   shift, and go to state 54
+    CHAR    shift, and go to state 55
+    CHARP   shift, and go to state 56
+    STRING  shift, and go to state 57
+
+    type  go to state 58
+
+
+State 25
+
+    5 code: PROC ID L_BRACKET args R_BRACKET . proc_body
+
+    L_BLOCK  shift, and go to state 20
+
+    proc_body  go to state 59
+
+
+State 26
+
+   55 args: args SEMICOLON . args
+
+    ID  shift, and go to state 15
+
+    $default  reduce using rule 53 (args)
+
+    vars     go to state 16
+    declare  go to state 17
+    args     go to state 60
+
+
+State 27
+
+    4 code: FUNC ID L_BRACKET args R_BRACKET . RET type func_body
+
+    RET  shift, and go to state 61
+
+
+State 28
+
+   34 code_stmt: proc_body .
+
+    $default  reduce using rule 34 (code_stmt)
+
+
+State 29
+
+   16 proc_body: L_BLOCK code_stmt . R_BLOCK
+   33 code_stmt: code_stmt . statmnt
+
+    STRING        shift, and go to state 30
+    PROC          shift, and go to state 62
+    FUNC          shift, and go to state 5
+    RET           shift, and go to state 63
+    NONE          shift, and go to state 31
+    IF            shift, and go to state 64
+    FOR           shift, and go to state 65
+    WHILE         shift, and go to state 66
+    MINUS         shift, and go to state 32
+    LOGICAL_NOT   shift, and go to state 33
+    PIPE          shift, and go to state 34
+    PLUS          shift, and go to state 35
+    ADDRESS_OF    shift, and go to state 36
+    POINTER_SIGN  shift, and go to state 67
+    L_BRACKET     shift, and go to state 37
+    R_BLOCK       shift, and go to state 68
+    ID            shift, and go to state 38
+    TRUE          shift, and go to state 39
+    FALSE         shift, and go to state 40
+    INTEGER       shift, and go to state 41
+    REAL_NUM      shift, and go to state 42
+    HEX           shift, and go to state 43
+    CHAR_TOKEN    shift, and go to state 44
+    VAR           shift, and go to state 69
+
+    code             go to state 70
+    const            go to state 45
+    loop             go to state 71
+    condition        go to state 72
+    statmnt          go to state 73
+    funct            go to state 46
+    var_decleration  go to state 74
+    declare          go to state 75
+    exp              go to state 76
+
+
+State 30
+
+   19 const: STRING .
+
+    $default  reduce using rule 19 (const)
+
+
+State 31
+
+   26 const: NONE .
+
+    $default  reduce using rule 26 (const)
+
+
+State 32
+
+   64 exp: MINUS . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 77
+
+
+State 33
+
+   65 exp: LOGICAL_NOT . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 78
+
+
+State 34
+
+   59 exp: PIPE . ID PIPE
+
+    ID  shift, and go to state 79
+
+
+State 35
+
+   63 exp: PLUS . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 80
+
+
+State 36
+
+   60 exp: ADDRESS_OF . declare
+
+    ID  shift, and go to state 15
+
+    declare  go to state 81
+
+
+State 37
+
+   62 exp: L_BRACKET . exp R_BRACKET
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 82
+
+
+State 38
+
+   44 funct: ID . L_BRACKET vars R_BRACKET
+   51 declare: ID .
+   52        | ID . L_SQR exp R_SQR
+
+    L_BRACKET  shift, and go to state 83
+    L_SQR      shift, and go to state 22
+
+    $default  reduce using rule 51 (declare)
+
+
+State 39
+
+   25 const: TRUE .
+
+    $default  reduce using rule 25 (const)
+
+
+State 40
+
+   24 const: FALSE .
+
+    $default  reduce using rule 24 (const)
+
+
+State 41
+
+   20 const: INTEGER .
+
+    $default  reduce using rule 20 (const)
+
+
+State 42
+
+   22 const: REAL_NUM .
+
+    $default  reduce using rule 22 (const)
+
+
+State 43
+
+   21 const: HEX .
+
+    $default  reduce using rule 21 (const)
+
+
+State 44
+
+   23 const: CHAR_TOKEN .
+
+    $default  reduce using rule 23 (const)
+
+
+State 45
+
+   58 exp: const .
+
+    $default  reduce using rule 58 (exp)
+
+
+State 46
+
+   61 exp: funct .
+
+    $default  reduce using rule 61 (exp)
+
+
+State 47
+
+   18 const: declare .
+
+    $default  reduce using rule 18 (const)
+
+
+State 48
+
+   52 declare: ID L_SQR exp . R_SQR
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+    R_SQR             shift, and go to state 96
+
+
+State 49
+
+   50 vars: vars COMMA declare .
+
+    $default  reduce using rule 50 (vars)
+
+
+State 50
+
+   10 type: BOOL .
+
+    $default  reduce using rule 10 (type)
+
+
+State 51
+
+    6 type: INT .
+
+    $default  reduce using rule 6 (type)
+
+
+State 52
+
+   13 type: INTP .
+
+    $default  reduce using rule 13 (type)
+
+
+State 53
+
+    7 type: REAL .
+
+    $default  reduce using rule 7 (type)
+
+
+State 54
+
+   12 type: REALP .
+
+    $default  reduce using rule 12 (type)
+
+
+State 55
+
+    8 type: CHAR .
+
+    $default  reduce using rule 8 (type)
+
+
+State 56
+
+   11 type: CHARP .
+
+    $default  reduce using rule 11 (type)
+
+
+State 57
+
+    9 type: STRING .
+
+    $default  reduce using rule 9 (type)
+
+
+State 58
+
+   54 args: vars COLON type .
+
+    $default  reduce using rule 54 (args)
+
+
+State 59
+
+    5 code: PROC ID L_BRACKET args R_BRACKET proc_body .
+
+    $default  reduce using rule 5 (code)
+
+
+State 60
+
+   55 args: args . SEMICOLON args
+   55     | args SEMICOLON args .
+
+    $default  reduce using rule 55 (args)
+
+
+State 61
+
+    4 code: FUNC ID L_BRACKET args R_BRACKET RET . type func_body
+
+    BOOL    shift, and go to state 50
+    INT     shift, and go to state 51
+    INTP    shift, and go to state 52
+    REAL    shift, and go to state 53
+    REALP   shift, and go to state 54
+    CHAR    shift, and go to state 55
+    CHARP   shift, and go to state 56
+    STRING  shift, and go to state 57
+
+    type  go to state 97
+
+
+State 62
+
+    5 code: PROC . ID L_BRACKET args R_BRACKET proc_body
+
+    ID  shift, and go to state 9
+
+
+State 63
+
+   43 statmnt: RET . exp SEMICOLON
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 98
+
+
+State 64
+
+   29 condition: IF . L_BRACKET exp R_BRACKET cond_body
+   30          | IF . L_BRACKET exp R_BRACKET cond_body ELSE cond_body
+
+    L_BRACKET  shift, and go to state 99
+
+
+State 65
+
+   28 loop: FOR . L_BRACKET inits SEMICOLON exp SEMICOLON prom R_BRACKET cond_body
+
+    L_BRACKET  shift, and go to state 100
+
+
+State 66
+
+   27 loop: WHILE . L_BRACKET exp R_BRACKET cond_body
+
+    L_BRACKET  shift, and go to state 101
+
+
+State 67
+
+   48 var_decleration: POINTER_SIGN . declare ASSIGN exp
+
+    ID  shift, and go to state 15
+
+    declare  go to state 102
+
+
+State 68
+
+   16 proc_body: L_BLOCK code_stmt R_BLOCK .
+
+    $default  reduce using rule 16 (proc_body)
+
+
+State 69
+
+   46 var_decleration: VAR . vars COLON type L_SQR INTEGER R_SQR
+   47                | VAR . vars COLON type
+
+    ID  shift, and go to state 15
+
+    vars     go to state 103
+    declare  go to state 17
+
+
+State 70
+
+   39 statmnt: code .
+
+    $default  reduce using rule 39 (statmnt)
+
+
+State 71
+
+   42 statmnt: loop .
+
+    $default  reduce using rule 42 (statmnt)
+
+
+State 72
+
+   41 statmnt: condition .
+
+    $default  reduce using rule 41 (statmnt)
+
+
+State 73
+
+   33 code_stmt: code_stmt statmnt .
+
+    $default  reduce using rule 33 (code_stmt)
+
+
+State 74
+
+   38 statmnt: var_decleration . SEMICOLON
+
+    SEMICOLON  shift, and go to state 104
+
+
+State 75
+
+   18 const: declare .
+   45 var_decleration: declare . ASSIGN exp
+
+    ASSIGN  shift, and go to state 105
+
+    $default  reduce using rule 18 (const)
+
+
+State 76
+
+   40 statmnt: exp . SEMICOLON
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+    SEMICOLON         shift, and go to state 106
+
+
+State 77
+
+   64 exp: MINUS exp .
+   66    | exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 64 (exp)
+
+
+State 78
+
+   65 exp: LOGICAL_NOT exp .
+   66    | exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    $default  reduce using rule 65 (exp)
+
+
+State 79
+
+   59 exp: PIPE ID . PIPE
+
+    PIPE  shift, and go to state 107
+
+
+State 80
+
+   63 exp: PLUS exp .
+   66    | exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 63 (exp)
+
+
+State 81
+
+   60 exp: ADDRESS_OF declare .
+
+    $default  reduce using rule 60 (exp)
+
+
+State 82
+
+   62 exp: L_BRACKET exp . R_BRACKET
+   66    | exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+    R_BRACKET         shift, and go to state 108
+
+
+State 83
+
+   44 funct: ID L_BRACKET . vars R_BRACKET
+
+    ID  shift, and go to state 15
+
+    vars     go to state 109
+    declare  go to state 17
+
+
+State 84
+
+   70 exp: exp AND . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 110
+
+
+State 85
+
+   69 exp: exp DIVISION_OP . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 111
+
+
+State 86
+
+   73 exp: exp EQUAL . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 112
+
+
+State 87
+
+   77 exp: exp BIGGER_THAN . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 113
+
+
+State 88
+
+   74 exp: exp BIGGER_OR_EQUAL . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 114
+
+
+State 89
+
+   76 exp: exp SMALLER_THAN . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 115
+
+
+State 90
+
+   75 exp: exp SMALLER_OR_EQUAL . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 116
+
+
+State 91
+
+   67 exp: exp MINUS . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 117
+
+
+State 92
+
+   72 exp: exp NOT_EQUAL . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 118
+
+
+State 93
+
+   71 exp: exp OR . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 119
+
+
+State 94
+
+   66 exp: exp PLUS . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 120
+
+
+State 95
+
+   68 exp: exp MUL . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 121
+
+
+State 96
+
+   52 declare: ID L_SQR exp R_SQR .
+
+    $default  reduce using rule 52 (declare)
+
+
+State 97
+
+    4 code: FUNC ID L_BRACKET args R_BRACKET RET type . func_body
+
+    L_BLOCK  shift, and go to state 122
+
+    func_body  go to state 123
+
+
+State 98
+
+   43 statmnt: RET exp . SEMICOLON
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+    SEMICOLON         shift, and go to state 124
+
+
+State 99
+
+   29 condition: IF L_BRACKET . exp R_BRACKET cond_body
+   30          | IF L_BRACKET . exp R_BRACKET cond_body ELSE cond_body
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 125
+
+
+State 100
+
+   28 loop: FOR L_BRACKET . inits SEMICOLON exp SEMICOLON prom R_BRACKET cond_body
+
+    ID  shift, and go to state 126
+
+    inits  go to state 127
+
+
+State 101
+
+   27 loop: WHILE L_BRACKET . exp R_BRACKET cond_body
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 128
+
+
+State 102
+
+   48 var_decleration: POINTER_SIGN declare . ASSIGN exp
+
+    ASSIGN  shift, and go to state 129
+
+
+State 103
+
+   46 var_decleration: VAR vars . COLON type L_SQR INTEGER R_SQR
+   47                | VAR vars . COLON type
+   50 vars: vars . COMMA declare
+
+    COMMA  shift, and go to state 23
+    COLON  shift, and go to state 130
+
+
+State 104
+
+   38 statmnt: var_decleration SEMICOLON .
+
+    $default  reduce using rule 38 (statmnt)
+
+
+State 105
+
+   45 var_decleration: declare ASSIGN . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 131
+
+
+State 106
+
+   40 statmnt: exp SEMICOLON .
+
+    $default  reduce using rule 40 (statmnt)
+
+
+State 107
+
+   59 exp: PIPE ID PIPE .
+
+    $default  reduce using rule 59 (exp)
+
+
+State 108
+
+   62 exp: L_BRACKET exp R_BRACKET .
+
+    $default  reduce using rule 62 (exp)
+
+
+State 109
+
+   44 funct: ID L_BRACKET vars . R_BRACKET
+   50 vars: vars . COMMA declare
+
+    R_BRACKET  shift, and go to state 132
+    COMMA      shift, and go to state 23
+
+
+State 110
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   70    | exp AND exp .
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    $default  reduce using rule 70 (exp)
+
+
+State 111
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   69    | exp DIVISION_OP exp .
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+
+    $default  reduce using rule 69 (exp)
+
+
+State 112
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   73    | exp EQUAL exp .
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    $default  reduce using rule 73 (exp)
+
+
+State 113
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+   77    | exp BIGGER_THAN exp .
+
+    $default  reduce using rule 77 (exp)
+
+
+State 114
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   74    | exp BIGGER_OR_EQUAL exp .
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    $default  reduce using rule 74 (exp)
+
+
+State 115
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   76    | exp SMALLER_THAN exp .
+   77    | exp . BIGGER_THAN exp
+
+    $default  reduce using rule 76 (exp)
+
+
+State 116
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   75    | exp SMALLER_OR_EQUAL exp .
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    $default  reduce using rule 75 (exp)
+
+
+State 117
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   67    | exp MINUS exp .
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 67 (exp)
+
+
+State 118
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   72    | exp NOT_EQUAL exp .
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    $default  reduce using rule 72 (exp)
+
+
+State 119
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   71    | exp OR exp .
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    $default  reduce using rule 71 (exp)
+
+
+State 120
+
+   66 exp: exp . PLUS exp
+   66    | exp PLUS exp .
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 66 (exp)
+
+
+State 121
+
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   68    | exp MUL exp .
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+
+    $default  reduce using rule 68 (exp)
+
+
+State 122
+
+   17 func_body: L_BLOCK . code_stmt R_BLOCK
+
+    L_BLOCK  shift, and go to state 20
+
+    $default  reduce using rule 35 (code_stmt)
+
+    proc_body  go to state 28
+    code_stmt  go to state 133
+
+
+State 123
+
+    4 code: FUNC ID L_BRACKET args R_BRACKET RET type func_body .
+
+    $default  reduce using rule 4 (code)
+
+
+State 124
+
+   43 statmnt: RET exp SEMICOLON .
+
+    $default  reduce using rule 43 (statmnt)
+
+
+State 125
+
+   29 condition: IF L_BRACKET exp . R_BRACKET cond_body
+   30          | IF L_BRACKET exp . R_BRACKET cond_body ELSE cond_body
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+    R_BRACKET         shift, and go to state 134
+
+
+State 126
+
+   37 inits: ID . ASSIGN exp
+
+    ASSIGN  shift, and go to state 135
+
+
+State 127
+
+   28 loop: FOR L_BRACKET inits . SEMICOLON exp SEMICOLON prom R_BRACKET cond_body
+   36 inits: inits . COMMA ID ASSIGN exp
+
+    COMMA      shift, and go to state 136
+    SEMICOLON  shift, and go to state 137
+
+
+State 128
+
+   27 loop: WHILE L_BRACKET exp . R_BRACKET cond_body
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+    R_BRACKET         shift, and go to state 138
+
+
+State 129
+
+   48 var_decleration: POINTER_SIGN declare ASSIGN . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 139
+
+
+State 130
+
+   46 var_decleration: VAR vars COLON . type L_SQR INTEGER R_SQR
+   47                | VAR vars COLON . type
+
+    BOOL    shift, and go to state 50
+    INT     shift, and go to state 51
+    INTP    shift, and go to state 52
+    REAL    shift, and go to state 53
+    REALP   shift, and go to state 54
+    CHAR    shift, and go to state 55
+    CHARP   shift, and go to state 56
+    STRING  shift, and go to state 57
+
+    type  go to state 140
+
+
+State 131
+
+   45 var_decleration: declare ASSIGN exp .
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 45 (var_decleration)
+
+
+State 132
+
+   44 funct: ID L_BRACKET vars R_BRACKET .
+
+    $default  reduce using rule 44 (funct)
+
+
+State 133
+
+   17 func_body: L_BLOCK code_stmt . R_BLOCK
+   33 code_stmt: code_stmt . statmnt
+
+    STRING        shift, and go to state 30
+    PROC          shift, and go to state 62
+    FUNC          shift, and go to state 5
+    RET           shift, and go to state 63
+    NONE          shift, and go to state 31
+    IF            shift, and go to state 64
+    FOR           shift, and go to state 65
+    WHILE         shift, and go to state 66
+    MINUS         shift, and go to state 32
+    LOGICAL_NOT   shift, and go to state 33
+    PIPE          shift, and go to state 34
+    PLUS          shift, and go to state 35
+    ADDRESS_OF    shift, and go to state 36
+    POINTER_SIGN  shift, and go to state 67
+    L_BRACKET     shift, and go to state 37
+    R_BLOCK       shift, and go to state 141
+    ID            shift, and go to state 38
+    TRUE          shift, and go to state 39
+    FALSE         shift, and go to state 40
+    INTEGER       shift, and go to state 41
+    REAL_NUM      shift, and go to state 42
+    HEX           shift, and go to state 43
+    CHAR_TOKEN    shift, and go to state 44
+    VAR           shift, and go to state 69
+
+    code             go to state 70
+    const            go to state 45
+    loop             go to state 71
+    condition        go to state 72
+    statmnt          go to state 73
+    funct            go to state 46
+    var_decleration  go to state 74
+    declare          go to state 75
+    exp              go to state 76
+
+
+State 134
+
+   29 condition: IF L_BRACKET exp R_BRACKET . cond_body
+   30          | IF L_BRACKET exp R_BRACKET . cond_body ELSE cond_body
+
+    STRING        shift, and go to state 30
+    PROC          shift, and go to state 62
+    FUNC          shift, and go to state 5
+    RET           shift, and go to state 63
+    NONE          shift, and go to state 31
+    IF            shift, and go to state 64
+    FOR           shift, and go to state 65
+    WHILE         shift, and go to state 66
+    MINUS         shift, and go to state 32
+    LOGICAL_NOT   shift, and go to state 33
+    PIPE          shift, and go to state 34
+    PLUS          shift, and go to state 35
+    ADDRESS_OF    shift, and go to state 36
+    POINTER_SIGN  shift, and go to state 67
+    L_BRACKET     shift, and go to state 37
+    L_BLOCK       shift, and go to state 142
+    ID            shift, and go to state 38
+    TRUE          shift, and go to state 39
+    FALSE         shift, and go to state 40
+    INTEGER       shift, and go to state 41
+    REAL_NUM      shift, and go to state 42
+    HEX           shift, and go to state 43
+    CHAR_TOKEN    shift, and go to state 44
+    VAR           shift, and go to state 69
+
+    code             go to state 70
+    const            go to state 45
+    loop             go to state 71
+    condition        go to state 72
+    cond_body        go to state 143
+    statmnt          go to state 144
+    funct            go to state 46
+    var_decleration  go to state 74
+    declare          go to state 75
+    exp              go to state 76
+
+
+State 135
+
+   37 inits: ID ASSIGN . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 145
+
+
+State 136
+
+   36 inits: inits COMMA . ID ASSIGN exp
+
+    ID  shift, and go to state 146
+
+
+State 137
+
+   28 loop: FOR L_BRACKET inits SEMICOLON . exp SEMICOLON prom R_BRACKET cond_body
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 147
+
+
+State 138
+
+   27 loop: WHILE L_BRACKET exp R_BRACKET . cond_body
+
+    STRING        shift, and go to state 30
+    PROC          shift, and go to state 62
+    FUNC          shift, and go to state 5
+    RET           shift, and go to state 63
+    NONE          shift, and go to state 31
+    IF            shift, and go to state 64
+    FOR           shift, and go to state 65
+    WHILE         shift, and go to state 66
+    MINUS         shift, and go to state 32
+    LOGICAL_NOT   shift, and go to state 33
+    PIPE          shift, and go to state 34
+    PLUS          shift, and go to state 35
+    ADDRESS_OF    shift, and go to state 36
+    POINTER_SIGN  shift, and go to state 67
+    L_BRACKET     shift, and go to state 37
+    L_BLOCK       shift, and go to state 142
+    ID            shift, and go to state 38
+    TRUE          shift, and go to state 39
+    FALSE         shift, and go to state 40
+    INTEGER       shift, and go to state 41
+    REAL_NUM      shift, and go to state 42
+    HEX           shift, and go to state 43
+    CHAR_TOKEN    shift, and go to state 44
+    VAR           shift, and go to state 69
+
+    code             go to state 70
+    const            go to state 45
+    loop             go to state 71
+    condition        go to state 72
+    cond_body        go to state 148
+    statmnt          go to state 144
+    funct            go to state 46
+    var_decleration  go to state 74
+    declare          go to state 75
+    exp              go to state 76
+
+
+State 139
+
+   48 var_decleration: POINTER_SIGN declare ASSIGN exp .
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 48 (var_decleration)
+
+
+State 140
+
+   46 var_decleration: VAR vars COLON type . L_SQR INTEGER R_SQR
+   47                | VAR vars COLON type .
+
+    L_SQR  shift, and go to state 149
+
+    $default  reduce using rule 47 (var_decleration)
+
+
+State 141
+
+   17 func_body: L_BLOCK code_stmt R_BLOCK .
+
+    $default  reduce using rule 17 (func_body)
+
+
+State 142
+
+   31 cond_body: L_BLOCK . code_stmt R_BLOCK
+
+    L_BLOCK  shift, and go to state 20
+
+    $default  reduce using rule 35 (code_stmt)
+
+    proc_body  go to state 28
+    code_stmt  go to state 150
+
+
+State 143
+
+   29 condition: IF L_BRACKET exp R_BRACKET cond_body .
+   30          | IF L_BRACKET exp R_BRACKET cond_body . ELSE cond_body
+
+    ELSE  shift, and go to state 151
+
+    $default  reduce using rule 29 (condition)
+
+
+State 144
+
+   32 cond_body: statmnt .
+
+    $default  reduce using rule 32 (cond_body)
+
+
+State 145
+
+   37 inits: ID ASSIGN exp .
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 37 (inits)
+
+
+State 146
+
+   36 inits: inits COMMA ID . ASSIGN exp
+
+    ASSIGN  shift, and go to state 152
+
+
+State 147
+
+   28 loop: FOR L_BRACKET inits SEMICOLON exp . SEMICOLON prom R_BRACKET cond_body
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+    SEMICOLON         shift, and go to state 153
+
+
+State 148
+
+   27 loop: WHILE L_BRACKET exp R_BRACKET cond_body .
+
+    $default  reduce using rule 27 (loop)
+
+
+State 149
+
+   46 var_decleration: VAR vars COLON type L_SQR . INTEGER R_SQR
+
+    INTEGER  shift, and go to state 154
+
+
+State 150
+
+   31 cond_body: L_BLOCK code_stmt . R_BLOCK
+   33 code_stmt: code_stmt . statmnt
+
+    STRING        shift, and go to state 30
+    PROC          shift, and go to state 62
+    FUNC          shift, and go to state 5
+    RET           shift, and go to state 63
+    NONE          shift, and go to state 31
+    IF            shift, and go to state 64
+    FOR           shift, and go to state 65
+    WHILE         shift, and go to state 66
+    MINUS         shift, and go to state 32
+    LOGICAL_NOT   shift, and go to state 33
+    PIPE          shift, and go to state 34
+    PLUS          shift, and go to state 35
+    ADDRESS_OF    shift, and go to state 36
+    POINTER_SIGN  shift, and go to state 67
+    L_BRACKET     shift, and go to state 37
+    R_BLOCK       shift, and go to state 155
+    ID            shift, and go to state 38
+    TRUE          shift, and go to state 39
+    FALSE         shift, and go to state 40
+    INTEGER       shift, and go to state 41
+    REAL_NUM      shift, and go to state 42
+    HEX           shift, and go to state 43
+    CHAR_TOKEN    shift, and go to state 44
+    VAR           shift, and go to state 69
+
+    code             go to state 70
+    const            go to state 45
+    loop             go to state 71
+    condition        go to state 72
+    statmnt          go to state 73
+    funct            go to state 46
+    var_decleration  go to state 74
+    declare          go to state 75
+    exp              go to state 76
+
+
+State 151
+
+   30 condition: IF L_BRACKET exp R_BRACKET cond_body ELSE . cond_body
+
+    STRING        shift, and go to state 30
+    PROC          shift, and go to state 62
+    FUNC          shift, and go to state 5
+    RET           shift, and go to state 63
+    NONE          shift, and go to state 31
+    IF            shift, and go to state 64
+    FOR           shift, and go to state 65
+    WHILE         shift, and go to state 66
+    MINUS         shift, and go to state 32
+    LOGICAL_NOT   shift, and go to state 33
+    PIPE          shift, and go to state 34
+    PLUS          shift, and go to state 35
+    ADDRESS_OF    shift, and go to state 36
+    POINTER_SIGN  shift, and go to state 67
+    L_BRACKET     shift, and go to state 37
+    L_BLOCK       shift, and go to state 142
+    ID            shift, and go to state 38
+    TRUE          shift, and go to state 39
+    FALSE         shift, and go to state 40
+    INTEGER       shift, and go to state 41
+    REAL_NUM      shift, and go to state 42
+    HEX           shift, and go to state 43
+    CHAR_TOKEN    shift, and go to state 44
+    VAR           shift, and go to state 69
+
+    code             go to state 70
+    const            go to state 45
+    loop             go to state 71
+    condition        go to state 72
+    cond_body        go to state 156
+    statmnt          go to state 144
+    funct            go to state 46
+    var_decleration  go to state 74
+    declare          go to state 75
+    exp              go to state 76
+
+
+State 152
+
+   36 inits: inits COMMA ID ASSIGN . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 157
+
+
+State 153
+
+   28 loop: FOR L_BRACKET inits SEMICOLON exp SEMICOLON . prom R_BRACKET cond_body
+
+    ID  shift, and go to state 15
+
+    declare  go to state 158
+    prom     go to state 159
+
+
+State 154
+
+   46 var_decleration: VAR vars COLON type L_SQR INTEGER . R_SQR
+
+    R_SQR  shift, and go to state 160
+
+
+State 155
+
+   31 cond_body: L_BLOCK code_stmt R_BLOCK .
+
+    $default  reduce using rule 31 (cond_body)
+
+
+State 156
+
+   30 condition: IF L_BRACKET exp R_BRACKET cond_body ELSE cond_body .
+
+    $default  reduce using rule 30 (condition)
+
+
+State 157
+
+   36 inits: inits COMMA ID ASSIGN exp .
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 36 (inits)
+
+
+State 158
+
+   56 prom: declare . ASSIGN exp
+
+    ASSIGN  shift, and go to state 161
+
+
+State 159
+
+   28 loop: FOR L_BRACKET inits SEMICOLON exp SEMICOLON prom . R_BRACKET cond_body
+   57 prom: prom . COMMA declare ASSIGN exp
+
+    R_BRACKET  shift, and go to state 162
+    COMMA      shift, and go to state 163
+
+
+State 160
+
+   46 var_decleration: VAR vars COLON type L_SQR INTEGER R_SQR .
+
+    $default  reduce using rule 46 (var_decleration)
+
+
+State 161
+
+   56 prom: declare ASSIGN . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 164
+
+
+State 162
+
+   28 loop: FOR L_BRACKET inits SEMICOLON exp SEMICOLON prom R_BRACKET . cond_body
+
+    STRING        shift, and go to state 30
+    PROC          shift, and go to state 62
+    FUNC          shift, and go to state 5
+    RET           shift, and go to state 63
+    NONE          shift, and go to state 31
+    IF            shift, and go to state 64
+    FOR           shift, and go to state 65
+    WHILE         shift, and go to state 66
+    MINUS         shift, and go to state 32
+    LOGICAL_NOT   shift, and go to state 33
+    PIPE          shift, and go to state 34
+    PLUS          shift, and go to state 35
+    ADDRESS_OF    shift, and go to state 36
+    POINTER_SIGN  shift, and go to state 67
+    L_BRACKET     shift, and go to state 37
+    L_BLOCK       shift, and go to state 142
+    ID            shift, and go to state 38
+    TRUE          shift, and go to state 39
+    FALSE         shift, and go to state 40
+    INTEGER       shift, and go to state 41
+    REAL_NUM      shift, and go to state 42
+    HEX           shift, and go to state 43
+    CHAR_TOKEN    shift, and go to state 44
+    VAR           shift, and go to state 69
+
+    code             go to state 70
+    const            go to state 45
+    loop             go to state 71
+    condition        go to state 72
+    cond_body        go to state 165
+    statmnt          go to state 144
+    funct            go to state 46
+    var_decleration  go to state 74
+    declare          go to state 75
+    exp              go to state 76
+
+
+State 163
+
+   57 prom: prom COMMA . declare ASSIGN exp
+
+    ID  shift, and go to state 15
+
+    declare  go to state 166
+
+
+State 164
+
+   56 prom: declare ASSIGN exp .
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 56 (prom)
+
+
+State 165
+
+   28 loop: FOR L_BRACKET inits SEMICOLON exp SEMICOLON prom R_BRACKET cond_body .
+
+    $default  reduce using rule 28 (loop)
+
+
+State 166
+
+   57 prom: prom COMMA declare . ASSIGN exp
+
+    ASSIGN  shift, and go to state 167
+
+
+State 167
+
+   57 prom: prom COMMA declare ASSIGN . exp
+
+    STRING       shift, and go to state 30
+    NONE         shift, and go to state 31
+    MINUS        shift, and go to state 32
+    LOGICAL_NOT  shift, and go to state 33
+    PIPE         shift, and go to state 34
+    PLUS         shift, and go to state 35
+    ADDRESS_OF   shift, and go to state 36
+    L_BRACKET    shift, and go to state 37
+    ID           shift, and go to state 38
+    TRUE         shift, and go to state 39
+    FALSE        shift, and go to state 40
+    INTEGER      shift, and go to state 41
+    REAL_NUM     shift, and go to state 42
+    HEX          shift, and go to state 43
+    CHAR_TOKEN   shift, and go to state 44
+
+    const    go to state 45
+    funct    go to state 46
+    declare  go to state 47
+    exp      go to state 168
+
+
+State 168
+
+   57 prom: prom COMMA declare ASSIGN exp .
+   66 exp: exp . PLUS exp
+   67    | exp . MINUS exp
+   68    | exp . MUL exp
+   69    | exp . DIVISION_OP exp
+   70    | exp . AND exp
+   71    | exp . OR exp
+   72    | exp . NOT_EQUAL exp
+   73    | exp . EQUAL exp
+   74    | exp . BIGGER_OR_EQUAL exp
+   75    | exp . SMALLER_OR_EQUAL exp
+   76    | exp . SMALLER_THAN exp
+   77    | exp . BIGGER_THAN exp
+
+    AND               shift, and go to state 84
+    DIVISION_OP       shift, and go to state 85
+    EQUAL             shift, and go to state 86
+    BIGGER_THAN       shift, and go to state 87
+    BIGGER_OR_EQUAL   shift, and go to state 88
+    SMALLER_THAN      shift, and go to state 89
+    SMALLER_OR_EQUAL  shift, and go to state 90
+    MINUS             shift, and go to state 91
+    NOT_EQUAL         shift, and go to state 92
+    OR                shift, and go to state 93
+    PLUS              shift, and go to state 94
+    MUL               shift, and go to state 95
+
+    $default  reduce using rule 57 (prom)
