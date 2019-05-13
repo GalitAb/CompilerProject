@@ -1,3 +1,5 @@
+%x C_COMMENT
+
 %{
 	#include <stdio.h>
 	#include <stdlib.h>
@@ -59,7 +61,6 @@
 "," 						return COMMA;
 ":" 						return COLON;
 ";" 						return SEMICOLON;
-\/\%.*\%\/ 					{yylval.string = strdup(yytext); return  COMMENT;}
 
 "_" 						return UNDERSCORE;
 \|[a-zA-Z0-9]+\| 			return STR_LEN;
@@ -78,9 +79,14 @@
 
 "'" 						return QUOTE;
 \" 						return DOUBLE_QUOTES;
-"/%" 						return BEGIN_COMMENT;
-"%/" 						return END_COMMENT;
 [ \t\r\f]+ ;
+
+
+"/%"            { BEGIN(C_COMMENT); }
+<C_COMMENT>"%/" { BEGIN(INITIAL); }
+<C_COMMENT>\n   yylineno++;
+<C_COMMENT>.   ;
+
 \n ++yylineno;
 . return yytext[0];
 %%

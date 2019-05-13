@@ -1,5 +1,3 @@
-#!/bin/bash
-
 lex scanner.l
 yacc -d parser.y --debug --verbose 
 cc -o testfile y.tab.c -Ly -ll 
